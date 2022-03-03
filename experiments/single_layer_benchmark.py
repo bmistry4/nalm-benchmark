@@ -653,7 +653,7 @@ for epoch_i, (x_train, t_train) in zip(range(resume_epoch, args.max_iterations +
                             args.regualizer_l1 * r_l1_scale * l1_loss + \
                             args.regualizer_npu_w * (r_l1_scale if args.reg_scale_type == 'heim' else r_w_scale) * regualizers['W-NPU'] + \
                             args.regualizer_gate * (r_l1_scale if args.reg_scale_type == 'heim' else r_w_scale) * regualizers['g-NPU'] + \
-                            ((0.05 * regualizers['inalu']) if (interpolation_error < 1 and epoch_i > 10) else 0)
+                            ((0.05 * regualizers['inalu']) if (interpolation_error < 1 and epoch_i > 10000) else 0)
 
     loss_train = loss_train_criterion + loss_train_regualizer
 

@@ -130,4 +130,4 @@ class Regualizer:
         def r_sparse(param):
             return torch.mean(torch.max(torch.min(param, -param) + 20, torch.full(param.shape, 0, dtype=torch.float32)))
 
-        return torch.sum(torch.Tensor(list(map(r_sparse, W))))
+        return torch.sum(torch.stack(list(map(r_sparse, W))))

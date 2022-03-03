@@ -12,6 +12,9 @@ merge_mode <- args[6] # if 'None' then just loads single file. Otherwise looks u
 merge_mode=ifelse(is.na(merge_mode), 'None', merge_mode)  # no passed arg becomes 'None' i.e. single model plot
 parameter_value <- args[7]  # type of experiment e.g. extrapolation.ranges (see exp_setups for value options)
 parameter_value=ifelse(is.na(parameter_value), 'extrapolation.range', parameter_value) # is no argument given then assume you want extrapolation.range
+inp_size <- args[8]  # number of input features for the experiment.
+inp_size=ifelse(is.na(inp_size), 2, inp_size) # is no argument given then assume you want inp_size
+
 csv_ext = '.csv'
 
 library(ggplot2)
@@ -56,26 +59,26 @@ name.file = paste0(load_folder, base_filename, csv_ext)
 name.output = paste0(results_folder, base_filename, '_', op)
 
 # load the experiment setups file containing the thresholds and filter for the relevant experiments.
-eps = read_csv('./exp_setups.csv') %>%
-  filter(simple == FALSE & parameter == parameter_value & operation == op) %>%
+eps = read_csv('./eps_thrs_sltr.csv') %>%
+  filter(simple == FALSE & parameter == parameter_value & operation == op & input.size == inp_size) %>%
   mutate(
     operation = revalue(operation, operation.full.to.short)
   ) %>%
-  select(operation, extrapolation.range, epsilon)
+  select(operation, extrapolation.range, threshold)
 
 # load (and merge) the exp results csvs and merge with the experument setup files
 dat = load.and.merge.csvs(merge_mode)  %>%
   # to maintain ordering of dat use join not merge (otherwise the solved at subplot will be incorrect)
   inner_join(eps)  %>%
   mutate(
-    # !! = remember the expression I stored recently? Now take it, and â€˜unquoteâ€™ it, that is, just run it!â€
+    # !! = remember the expression I stored recently? Now take it, and ‘unquote’ it, that is, just run it!”
     parameter = !!as.name(name.parameter)
   )
 
 dat.last = dat %>%
   group_by(name, parameter) %>%
   summarise(
-    threshold = last(epsilon),
+    threshold = last(threshold),
     best.model.step = best.model.step.fn(metric.valid.interpolation),
     interpolation.last = metric.valid.interpolation[best.model.step],
     extrapolation.last = metric.test.extrapolation[best.model.step],

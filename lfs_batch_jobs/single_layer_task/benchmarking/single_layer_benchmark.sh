@@ -307,14 +307,14 @@ for ((i=0;i<${#interpolation_ranges[@]};++i))
 #    > /data/nalms/logs/${experiment_name}/${interpolation_ranges[i]}-${seed}.out \
 #    2> /data/nalms/logs/${experiment_name}/errors/${interpolation_ranges[i]}-${seed}.err &
 
-#    experiment_name='benchmark/sltr-in100/sub/NAU'
+#    experiment_name='benchmark/sltr-in10/sub/NAU'
 #    mkdir -p /data/nalms/logs/${experiment_name}/errors
 #    python3 -u experiments/single_layer_benchmark.py \
-#    --input-size 100 --subset-ratio 0.01 --overlap-ratio 0 \
+#    --input-size 10 --subset-ratio 0.1 --overlap-ratio 0 \
 #    --operation sub --layer-type ReRegualizedLinearNAC  \
-#    --regualizer-scaling-start 20000 --regualizer-scaling-end 35000 --regualizer 0.01 \
+#    --regualizer-scaling-start 50000 --regualizer-scaling-end 75000 --regualizer 0.01 \
 #    --interpolation-range ${interpolation_ranges[i]} --extrapolation-range ${extrapolation_ranges[i]} \
-#    --seed ${seed} --max-iterations 50000 ${verbose_flag} --log-interval ${log_interval} \
+#    --seed ${seed} --max-iterations 100000 ${verbose_flag} --log-interval ${log_interval} \
 #    --name-prefix ${experiment_name} --remove-existing-data --no-cuda ${no_save_flag} \
 #    > /data/nalms/logs/${experiment_name}/${interpolation_ranges[i]}-${seed}.out \
 #    2> /data/nalms/logs/${experiment_name}/errors/${interpolation_ranges[i]}-${seed}.err &
