@@ -35,7 +35,7 @@ Install stable-nalu:
 
 ## Recreating Experiments From the Paper:
 First, create a csv file containing the threshold values for each range using 
-<pre> Rscript <a href="export/single_layer_task/benchmark/generate_exp_setups.r">generate_exp_setups.r</a> </pre>
+<pre> Rscript <a href="export/single_layer_task/benchmark/generate_exp_thresholds.r">generate_exp_thresholds.r</a> </pre>
 
 #### Generating plots consists of 3 stages
 1. Run a shell script which calls the python script to _generate the tensorboard results_ over multiple seeds and ranges
@@ -72,13 +72,17 @@ First, create a csv file containing the threshold values for each range using
 #### iNALU (input size 10) - Figure 18
 Generate the tensorboard results and the csv file using the first two stages. 
 To generate the plot, run:  
-<pre> Rscript <a href="export/single_layer_task/benchmark/plot_results.r">plot_results.r</a> /data/nalms/csvs/benchmark/sltr-in10/add/ /data/nalms/plots/benchmark/sltr-in10/add/ iNALU op-add None</pre>
+<pre> Rscript <a href="export/single_layer_task/benchmark/plot_results.r">plot_results.r</a> /data/nalms/csvs/benchmark/sltr-in10/add/ /data/nalms/plots/benchmark/sltr-in10/add/ iNALU op-add None None extrapolation.range 10</pre>
 
-#### NAU (input size 100) - Figure 19
+#### NAU (input size 10) - Figure 19
 Generate the tensorboard results and the csv file using the first two stages. 
 To generate the plot, run:  
-<pre> Rscript <a href="export/single_layer_task/benchmark/plot_results_multiop.r">plot_results_multiop.r</a> /data/nalms/csvs/benchmark/sltr-in100 /data/nalms/plots/benchmark/sltr-in100/ NAU-in100-failures op-sub-add None nau-failure</pre>
+<pre> Rscript <a href="export/single_layer_task/benchmark/plot_results_multiop.r">plot_results_multiop.r</a> /data/nalms/csvs/benchmark/sltr-in10 /data/nalms/plots/benchmark/sltr-in10/ NAU-in10-failures op-sub-add None nau-failure extrapolation.range 10</pre>
 
+#### NAU subtraction (input size 100) - Figure 20
+Generate the tensorboard results and the csv file using the first two stages. 
+To generate the plot, run:  
+<pre> Rscript <a href="export/single_layer_task/benchmark/plot_results.r">plot_results.r</a> /data/nalms/csvs/benchmark/sltr-in100/sub/ /data/nalms/plots/benchmark/sltr-in100/sub/ iNALU op-sub None None extrapolation.range 100</pre>
 
 ---
 # Neural Arithmetic Units
