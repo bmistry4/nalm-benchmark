@@ -12,6 +12,11 @@ import random
 
 # Parse arguments
 parser = argparse.ArgumentParser(description='Runs the simple function static task')
+parser.add_argument('--id',
+                        action='store',
+                        default=-1,
+                        type=int,
+                        help='Unique id to identify experiment')
 parser.add_argument('--layer-type',
                     action='store',
                     default='NALU',
@@ -340,6 +345,7 @@ setattr(args, 'cuda', torch.cuda.is_available() and not args.no_cuda)
 
 # Print configuration
 print(f'running')
+print(f'  - layer_type: {args.id}')
 print(f'  - layer_type: {args.layer_type}')
 print(f'  - first_layer: {args.first_layer}')
 print(f'  - operation: {args.operation}')
@@ -468,7 +474,8 @@ summary_writer = stable_nalu.writer.SummaryWriter(
     #f'_p-{args.pytorch_precision}'
     f'_gn-{args.clip_grad_norm if args.clip_grad_norm != None else f"F"}'
     f'_gv-{args.clip_grad_value if args.clip_grad_value != None else f"F"}'
-    f'_r{str(args.reinit)[0]}-{args.reinit_epoch_interval}-{args.reinit_max_stored_losses}',
+    f'_r{str(args.reinit)[0]}-{args.reinit_epoch_interval}-{args.reinit_max_stored_losses}'
+    f'_id{args.id}',
 #    f'_TB-{args.log_interval}',
     remove_existing_data=args.remove_existing_data
 )
