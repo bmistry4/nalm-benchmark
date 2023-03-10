@@ -45,6 +45,7 @@ from .npu import NPULayer
 from .npu_real import RealNPULayer
 
 from stable_nalu.layer.inalu import INALULayer
+from .mcfc import MCFullyConnected, MulMCFC
 
 from ..abstract import ExtendedTorchModule
 
@@ -92,6 +93,8 @@ unit_name_to_layer_class = {
     'NPU': NPULayer,
     'RealNPU': RealNPULayer,
     'iNALU': INALULayer,
+    'MCFC': MCFullyConnected,
+    'MulMCFC': MulMCFC
 }
 
 unit_name_to_cell_class = {

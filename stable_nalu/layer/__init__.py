@@ -33,3 +33,4 @@ from .generalized import GeneralizedLayer, GeneralizedCell
 from .npu import NPULayer
 from .npu_real import RealNPULayer
 from .inalu import INALULayer
+from .mcfc import MulMCFC, MCFullyConnected
