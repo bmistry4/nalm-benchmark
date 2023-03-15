@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# cmmd: bash marc-all-ranges.sh 0 0 ; bash marc-all-ranges.sh 1 1
+# cmmd: bash marc_single_layer.sh 0 24 
 # TODO - update path to experiment_name, logging, error logging, interp ranges, extrap ranges, id
+# Setup to run only ONE job at a time (i.e. 1 seed for 1 range)
 
 export LSB_JOB_REPORT_MAIL=N
 
@@ -26,27 +27,28 @@ for ((i=0;i<${#interpolation_ranges[@]};++i))
     export PYTHONPATH=./
 
     # TODO - uncomment the relevant experiment and run.
-    experiment_name='benchmark/sltr-in2/MulMCFC'
-    mkdir -p /data/nalms/logs/${experiment_name}/errors
-    python3 -u experiments/single_layer_benchmark.py \
-    --id 0 --operation mul --layer-type MulMCFC \
-    --regualizer-scaling-start 20000 --regualizer-scaling-end 35000 \
-    --interpolation-range ${interpolation_ranges[i]} --extrapolation-range ${extrapolation_ranges[i]} \
-    --seed ${seed} --max-iterations 50000 ${verbose_flag} --log-interval ${log_interval} \
-    --name-prefix ${experiment_name} --remove-existing-data --no-cuda ${no_save_flag} \
-    > /data/nalms/logs/${experiment_name}/${interpolation_ranges[i]}-${seed}.out \
-    2> /data/nalms/logs/${experiment_name}/errors/${interpolation_ranges[i]}-${seed}.err &
-
-#    experiment_name='benchmark/sltr-in2/MCFC'
-#    mkdir -p /data/nalms/logs/${experiment_name}/errors
-#    python3 -u experiments/single_layer_benchmark.py \
-#    --id 1 --operation add --layer-type MCFC \
+#    experiment_name='benchmark/sltr-in2/mul/MulMCFC'
+#    mkdir -p /data/bm4g15/nalu-stable-exp/logs/${experiment_name}/errors
+#    python3 -u /home/bm4g15/nalm-benchmark/experiments/single_layer_benchmark.py \
+#    --id 32 --operation mul --layer-type MulMCFC \
 #    --regualizer-scaling-start 20000 --regualizer-scaling-end 35000 \
 #    --interpolation-range ${interpolation_ranges[i]} --extrapolation-range ${extrapolation_ranges[i]} \
 #    --seed ${seed} --max-iterations 50000 ${verbose_flag} --log-interval ${log_interval} \
 #    --name-prefix ${experiment_name} --remove-existing-data --no-cuda ${no_save_flag} \
-#    > /data/nalms/logs/${experiment_name}/${interpolation_ranges[i]}-${seed}.out \
-#    2> /data/nalms/logs/${experiment_name}/errors/${interpolation_ranges[i]}-${seed}.err &
+#    > /data/bm4g15/nalu-stable-exp/logs/${experiment_name}/${interpolation_ranges[i]}-${seed}.out \
+#    2> /data/bm4g15/nalu-stable-exp/logs/${experiment_name}/errors/${interpolation_ranges[i]}-${seed}.err # do not send to bkg. A single run takes up most of the cpu resources. 
+
+    experiment_name='benchmark/sltr-in2/add/MCFC'
+    mkdir -p /data/bm4g15/nalu-stable-exp/logs/${experiment_name}/errors
+    python3 -u /home/bm4g15/nalm-benchmark/experiments/single_layer_benchmark.py \
+    --id 33 --operation add --layer-type MCFC \
+    --regualizer-scaling-start 20000 --regualizer-scaling-end 35000 \
+    --interpolation-range ${interpolation_ranges[i]} --extrapolation-range ${extrapolation_ranges[i]} \
+    --seed ${seed} --max-iterations 50000 ${verbose_flag} --log-interval ${log_interval} \
+    --name-prefix ${experiment_name} --remove-existing-data --no-cuda ${no_save_flag} \
+    > /data/bm4g15/nalu-stable-exp/logs/${experiment_name}/${interpolation_ranges[i]}-${seed}.out \
+    2> /data/bm4g15/nalu-stable-exp/logs/${experiment_name}/errors/${interpolation_ranges[i]}-${seed}.err # do not send to bkg. A single run takes up most of the cpu resources. 
+
   done
   wait
 
@@ -54,3 +56,4 @@ done
 wait
 date
 echo "Script finished."
+
