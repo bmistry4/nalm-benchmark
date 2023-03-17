@@ -715,7 +715,8 @@ print(f'finished:')
 if args.reinit:
     print(f'Reinitialized {reinit_counter} times')
 
-print(f'  - loss_train: {loss_train}')
+print(f'  - loss_train (+reg loss): {loss_train}')
+print(f'  - loss_train_criterion: {loss_train_criterion}')
 print(f'  - loss_valid_inter: {loss_valid_inter}')
 print(f'  - loss_valid_extra: {loss_valid_extra}')
 print()

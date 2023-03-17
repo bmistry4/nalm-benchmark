@@ -140,7 +140,8 @@ class TensorboardMetricReader:
                         columns['sparse.error.max'][-1] = (columns['sparse.error.max'][-1] + v.simple_value)/2.
 
                 #######################################################################################################
-                # Process sparsity error for the (mul)MCFC params -1) junction, 2) out_gate (and 3) bias for mulMCFC)
+                # Process sparsity error for the (mul)MCFC params -1) junction, 2) out_gate, 3) bias in MulMCFC,
+                # 4) g_hat in MulMCFCSignRealNPU
                 # Process  sparsity error for the MCFC junction
                 elif v.tag.endswith('mcfc_junction/sparsity_error') and current_logged_step == step:
                     # Step changed, update sparse error
@@ -160,15 +161,27 @@ class TensorboardMetricReader:
                         # calc avg sparsity err between the junction and out_gate
                         columns['sparse.error.max'][-1] = (columns['sparse.error.max'][-1] + v.simple_value)/2.
 
-                # Process sparsity error for the (mul)MCFC gate
+                # Process sparsity error for the (mul)MCFC bias
                 elif v.tag.endswith('mulmcfc_bias/sparsity_error') and current_logged_step == step:
                     if len(columns['step']) != len(columns['sparse.error.max']):
                         assert "MCFC should have already processed a mcfc_junction and mcfc_out_gate value. " \
                                "There should already exist a sparsity error in this row"
-                else:
-                    # calc avg sparsity err between the junction, out_gate and bias.
-                    # requires reverting the normalisation from the MFCF and reapplying a norm of cardinality 3
-                    columns['sparse.error.max'][-1] = ((columns['sparse.error.max'][-1] * 2) + v.simple_value) / 3.
+                    else:
+                        # calc avg sparsity err between the junction, out_gate and bias.
+                        # requires reverting the normalisation from the MFCF and reapplying a norm of cardinality 3
+                        columns['sparse.error.max'][-1] = ((columns['sparse.error.max'][-1] * 2) + v.simple_value) / 3.
+
+                # Process sparsity error for the MulMCFCSignRealNPU g_hat
+                elif v.tag.endswith('mulmcfcsignrealnpu_g_hat/sparsity_error') and current_logged_step == step:
+                    if len(columns['step']) != len(columns['sparse.error.max']):
+                        assert "MCFC should have already processed a mcfc_junction, mcfc_out_gate and mulmcfc_bias value. " \
+                               "There should already exist a sparsity error in this row"
+                    else:
+                        # calc avg sparsity err between the junction, out_gate, bias and g_hat
+                        # requires reverting the normalisation from the MulMFCF and reapplying a norm of cardinality 4
+                        columns['sparse.error.max'][-1] = ((columns['sparse.error.max'][
+                                                                -1] * 3) + v.simple_value) / 4.
+
                 #######################################################################################################
 
         if len(columns['sparse.error.max']) == 0:
