@@ -115,6 +115,7 @@ class TensorboardMetricReader:
                             v.simple_value
                         )
 
+                #######################################################################################################
                 # Process sparsity error for the NPU and RealNPU real weight matrix
                 elif v.tag.endswith('W_real/sparsity_error') and current_logged_step == step:
                     # Step changed, update sparse error
@@ -137,7 +138,38 @@ class TensorboardMetricReader:
                     else:
                         # calc avg sparsity err between the W_re and W_im
                         columns['sparse.error.max'][-1] = (columns['sparse.error.max'][-1] + v.simple_value)/2.
-                        # columns['W.im'].append(v.simple_value)
+
+                #######################################################################################################
+                # Process sparsity error for the (mul)MCFC params -1) junction, 2) out_gate (and 3) bias for mulMCFC)
+                # Process  sparsity error for the MCFC junction
+                elif v.tag.endswith('mcfc_junction/sparsity_error') and current_logged_step == step:
+                    # Step changed, update sparse error
+                    if len(columns['step']) != len(columns['sparse.error.max']):
+                        columns['sparse.error.max'].append(v.simple_value)
+                    else:
+                        columns['sparse.error.max'][-1] = max(
+                            columns['sparse.error.max'][-1],
+                            v.simple_value
+                        )
+                # Process sparsity error for the MCFC out_gate
+                elif v.tag.endswith('mcfc_out_gate/sparsity_error') and current_logged_step == step:
+                    if len(columns['step']) != len(columns['sparse.error.max']):
+                        assert "MCFC should have already processed a mcfc_junction value. " \
+                               "There should already exist a sparsity error in this row"
+                    else:
+                        # calc avg sparsity err between the junction and out_gate
+                        columns['sparse.error.max'][-1] = (columns['sparse.error.max'][-1] + v.simple_value)/2.
+
+                # Process sparsity error for the (mul)MCFC gate
+                elif v.tag.endswith('mulmcfc_bias/sparsity_error') and current_logged_step == step:
+                    if len(columns['step']) != len(columns['sparse.error.max']):
+                        assert "MCFC should have already processed a mcfc_junction and mcfc_out_gate value. " \
+                               "There should already exist a sparsity error in this row"
+                else:
+                    # calc avg sparsity err between the junction, out_gate and bias.
+                    # requires reverting the normalisation from the MFCF and reapplying a norm of cardinality 3
+                    columns['sparse.error.max'][-1] = ((columns['sparse.error.max'][-1] * 2) + v.simple_value) / 3.
+                #######################################################################################################
 
         if len(columns['sparse.error.max']) == 0:
             columns['sparse.error.max'] = [None] * len(columns['step'])
@@ -209,3 +241,4 @@ class TensorboardMetricReader:
 
                 df.rename(_csv_format_column_name, axis='columns', inplace=True)
                 yield df
+
