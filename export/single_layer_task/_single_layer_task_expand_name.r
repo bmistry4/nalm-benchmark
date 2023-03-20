@@ -12,7 +12,9 @@ single.model.full.to.short = c(
   'inalu'='iNALU',
   'nalu-gr'='G-NALU',
   'mcfc'='MCFC',
-  'mulmcfc'='MulMCFC'
+  'mulmcfc'='MulMCFC',
+  'mulmcfcsigninalu'='MulMCFC (sign: iNALU)',
+  'mulmcfcsignrealnpu'='MulMCFC (sign: Real NPU)'
 )
 
 model.full.to.short = c(
@@ -77,7 +79,10 @@ model.latex.to.exp = c(
   'iNALU'='iNALU',
   'G-NALU'='G-NALU',
   'MCFC'='MCFC',
-  'MulMCFC'='MulMCFC'
+  'MulMCFC'='MulMCFC',
+  'MulMCFC(sign: iNALU)'='MulMCFC (sign: iNALU)',
+  'MulMCFC (sign: Real NPU)'='MulMCFC (sign: Real NPU)'
+
 )
 
 model.to.exp = function(v) {
