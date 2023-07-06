@@ -26,6 +26,10 @@ The implemented NALMs are listed below:
 - [NPU](https://arxiv.org/abs/2006.01681)
 - [Real NPU](https://arxiv.org/abs/2006.01681)
 
+Implemented NALMs after Primer paper was published:
+- [MC-FC](http://proceedings.mlr.press/v139/hoedt21a/hoedt21a.pdf) (Mass conserving networks for add and mul)
+  - see findings at <a href="notes/MCFC_findings.pdf">MCFC_findings</a>
+
 ## Create env
 Generate a conda environment called nalu-env: 
 `conda env create -f nalu-env.yml`

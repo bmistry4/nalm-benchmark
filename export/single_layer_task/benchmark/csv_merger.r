@@ -77,7 +77,30 @@ load.and.merge.csvs = function(lookup.name) {
       paste0(load_folder, '/sub/', 'NAU', csv_ext)
     ),
       list('NAU (add)', 'NAU (sub)')
-    )
+    ),
+    "benchmark_sltr_mul" = csv.merger(list(
+      paste0(load_folder, 'NMU', csv_ext),
+      paste0(load_folder, 'MCFC', csv_ext),
+      paste0(load_folder, 'MulMCFCSignINALU', csv_ext),
+      paste0(load_folder, 'MulMCFCSignRealNPU', csv_ext)
+    ),
+      list()  # use predefined names from _single_layer_task_expand_name.r (allows for latex notation)
+    ),
+    "benchmark_sltr_mul_mcfc" = csv.merger(list(
+      paste0(load_folder, 'NMU', csv_ext),
+      paste0(load_folder, 'MulMCFC', csv_ext),
+      paste0(load_folder, 'MulMCFCSignINALU', csv_ext),
+      paste0(load_folder, 'MulMCFCSignRealNPU', csv_ext)
+    ),
+      list()  # use predefined names from _single_layer_task_expand_name.r (allows for latex notation)
+    ),
+    "benchmark_sltr_add_mcfc" = csv.merger(list(
+      paste0(load_folder, 'NAU', csv_ext),
+      paste0(load_folder, 'MCFC', csv_ext)
+    ),
+      list()  # use predefined names from _single_layer_task_expand_name.r (allows for latex notation)
+    ),
+    stop("Key given to csv_merger does not exist!")
   ))
 }
 
